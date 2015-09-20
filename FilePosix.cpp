@@ -69,7 +69,8 @@ bool File::Open( const char* filename, FileMode mode, bool truncate )
 		}
 	}
 
-	m_Handle = open( filename, flags );
+	m_Handle = open( filename, flags, S_IRUSR|S_IWUSR|S_IWOTH|S_IROTH ); //HeN1  //0665
+
 	return m_Handle >= 0;
 }
 
@@ -272,10 +273,10 @@ const char Helium::PathSeparator = TXT('/');
 bool Helium::GetFullPath( const char* path, std::string& fullPath )
 {
 	HELIUM_ASSERT( sizeof( path ) > 0 );
-	
+
 	// unbelievably, posix doesn't seem to have a built-in path normalization function
 	// that doesn't require the file to exist
-	
+
 	std::vector< std::string > directories;
 	SplitDirectories( path, directories );
 
@@ -285,7 +286,7 @@ bool Helium::GetFullPath( const char* path, std::string& fullPath )
 	}
 
 	std::vector< std::string > normalizedDirs;
-	
+
 	for( std::vector< std::string >::const_iterator itr = directories.begin(), end = directories.end(); itr != end; ++itr )
 	{
 		if ( *itr == "." )
@@ -304,7 +305,7 @@ bool Helium::GetFullPath( const char* path, std::string& fullPath )
 
 	fullPath.reserve( PATH_MAX );
 	fullPath.clear();
-	
+
 	// if it's not absolute, start with CWD
 	if ( path[ 0 ] != Helium::PathSeparator )
 	{
@@ -313,7 +314,7 @@ bool Helium::GetFullPath( const char* path, std::string& fullPath )
 		HELIUM_ASSERT( result ); // will fire when cwd isn't large enough
 		fullPath = cwd;
 	}
-	
+
 	for( std::vector< std::string >::const_iterator itr = normalizedDirs.begin(), end = normalizedDirs.end(); itr != end; ++itr )
 	{
 		fullPath += Helium::PathSeparator;
@@ -351,7 +352,7 @@ bool Helium::MakePath( const char* path )
 	{
 		return false;
 	}
-	
+
 	struct stat status;
 	std::string currentDirectory;
 	currentDirectory.reserve( PATH_MAX );

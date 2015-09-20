@@ -12,7 +12,7 @@ namespace Helium
 	// Constants
 	//
 
-	const size_t ERROR_STRING_BUF_SIZE = 768; 
+	const size_t ERROR_STRING_BUF_SIZE = 768;
 
 	//
 	// Exception class
@@ -56,6 +56,11 @@ namespace Helium
 			Signal
 #endif
 		};
+
+#if HELIUM_OS_WIN
+#else
+#pragma GCC diagnostic ignored "-Wunused-variable"  //HeN1
+#endif
 
 		static const char* Strings[] =
 		{

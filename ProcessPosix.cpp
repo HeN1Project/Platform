@@ -91,7 +91,7 @@ int Helium::SpawnResult( ProcessHandle handle )
 
 void Helium::SpawnKill( ProcessHandle handle )
 {
-	kill( handle, SIGTERM );	
+	kill( handle, SIGTERM );
 }
 
 int Helium::GetProcessId( ProcessHandle handle )
@@ -126,7 +126,7 @@ std::string Helium::GetProcessName()
 	std::string path = GetProcessPath();
 	size_t pos = path.rfind( Helium::PathSeparator );
 	if ( pos != std::string::npos )
-	{ 
+	{
 		return path.substr( pos + 1 );
 	}
 
@@ -189,18 +189,26 @@ std::string Helium::GetHomeDirectory()
 
 Helium::ModuleHandle Helium::LoadModule( const char* modulePath )
 {
+	  #if 0  //HeN1
 	return dlopen( modulePath, RTLD_NOW | RTLD_LOCAL );
+	#endif // 0
+	return 0;
 }
 
 void Helium::UnloadModule( ModuleHandle handle )
 {
 	if ( handle != HELIUM_INVALID_MODULE )
 	{
+	     #if 0  //HeN1
 		HELIUM_VERIFY( dlclose( handle ) );
+		#endif // 0
 	}
 }
 
 void* Helium::GetModuleFunction( ModuleHandle handle, const char* functionName )
 {
+   #if 0  //HeN1
 	return dlsym( handle, functionName );
+	#endif // 0
+	return 0;
 }
